@@ -111,5 +111,28 @@ class DataframeObject:
         """
         fh.write_file(file_name, self.data)
         print(f"Data written to {file_name}.")
+
+    
+    def __str__(self):
+        return f"Dataframe with columns: {list(self.data.keys())}"
+    
+    def __repr__(self):
+        return self.__str__()
+
+    def get_data(self):
+        """
+        Get the underlying data dictionary of the Dataframe.
+        Returns:
+            dict: The data dictionary where keys are column names and values are lists of column values.
+        """
+        return self.data
+    
+    def get_dtype(self):
+        """
+        Get the data types dictionary of the Dataframe.
+        Returns:
+            dict: The data types dictionary where keys are column names and values are data types ('int', 'float', 'string').
+        """
+        return self.dtype
         
 
