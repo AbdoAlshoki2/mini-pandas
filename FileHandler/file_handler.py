@@ -1,6 +1,8 @@
 import csv
 import os
 
+data_path = 'data'
+
 def read_csv_file(file_name = 'titanic.csv', dtypes:dict = None):
     """
     Read a CSV file and convert each column to the specified data type.
@@ -15,7 +17,7 @@ def read_csv_file(file_name = 'titanic.csv', dtypes:dict = None):
     
     """
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    file_path = os.path.join(project_root, 'data', file_name)
+    file_path = os.path.join(project_root, data_path, file_name)
 
     with open(file_path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -46,7 +48,7 @@ def read_dtype(file_name = 'titanic_dtype.csv'):
     """
 
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    file_path = os.path.join(project_root, 'data', file_name)
+    file_path = os.path.join(project_root, data_path, file_name)
 
     with open(file_path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -66,7 +68,7 @@ def write_file(file_name, data:dict):
         None
     """
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    file_path = os.path.join(project_root, 'data', file_name)
+    file_path = os.path.join(project_root, data_path, file_name)
 
     with open(file_path, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
