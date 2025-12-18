@@ -1,5 +1,6 @@
 class Dataframe:
     def __init__(self, data:dict, dtype:dict):
+        
         pass
     
     #TODO: define read_csv(data_path, dtype_path)
