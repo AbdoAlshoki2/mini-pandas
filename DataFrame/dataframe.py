@@ -38,7 +38,40 @@ class DataframeObject:
         return null_counts
 
     
-    def describe(self):
+    def fillna(self, num_strategy='mean', str_strategy='mode'):
+        """
+        Fill null (None) values in the Dataframe using specified strategies for numerical and string columns.
+        Args:
+            num_strategy (str): Strategy for numerical columns ('mean', 'median', 'mode').
+            str_strategy (str): Strategy for string columns ('mode').
+        """
+        for col_name, values in self.data.items():
+            if self.dtype[col_name] in ['int', 'float']:
+                if num_strategy == 'mean':
+                    fill_value = st.get_col_mean(values)
+                elif num_strategy == 'median':
+                    fill_value = st.get_col_median(values)
+                elif num_strategy == 'mode':
+                    fill_value = st.get_col_mode(values)
+                elif num_strategy == 'max':
+                    fill_value = st.get_col_max(values)
+                elif num_strategy == 'min':
+                    fill_value = st.get_col_min(values)
+                else:
+                    raise ValueError(f"Unknown numerical strategy: {num_strategy}")
+                
+                self.data[col_name] = [v if v is not None else fill_value for v in values]
+
+            else:
+                if str_strategy == 'mode':
+                    fill_value = st.get_col_mode(values)
+                else:
+                    raise ValueError(f"Unknown string strategy: {str_strategy}")
+                
+                self.data[col_name] = [v if v is not None else fill_value for v in values]
+               
+
+    def describe(self, file_name='statistics_output.csv'):
         """
         Generate basic statistics for numeric columns in the Dataframe.
         Returns:
@@ -48,14 +81,23 @@ class DataframeObject:
         result['columns'] = list(self.data.keys())
         nulls = self.count_nulls()
         result['null_counts'] = [nulls[col] for col in result['columns']]
-        result['max'] = [st.get_col_max(self.data[col]) if self.dtype[col] in ['int', 'float'] else None for col in result['columns']]
-        result['min'] = [st.get_col_min(self.data[col]) if self.dtype[col] in ['int', 'float'] else None for col in result['columns']]
-        result['mean'] = [st.get_col_mean(self.data[col]) if self.dtype[col] in ['int', 'float'] else None for col in result['columns']]
-        result['median'] = [st.get_col_median(self.data[col]) if self.dtype[col] in ['int', 'float'] else None for col in result['columns']]
+
+        mean_stats = st.get_stat(self.data, self.dtype, st.get_col_mean)
+        result['mean'] = [mean_stats[col] if col in mean_stats.keys() else None for col in result['columns'] ]
+
+        median_stats = st.get_stat(self.data, self.dtype, st.get_col_median)
+        result['median'] = [median_stats[col] if col in median_stats.keys() else None for col in result['columns']]
+
+        max_stats = st.get_stat(self.data, self.dtype, st.get_col_max)
+        result['max'] = [max_stats[col] if col in max_stats.keys() else None for col in result['columns']]
+
+        min_stats = st.get_stat(self.data, self.dtype, st.get_col_min)
+        result['min'] = [min_stats[col] if col in min_stats.keys() else None for col in result['columns']]
+
         result['mode'] = [st.get_col_mode(self.data[col]) for col in result['columns']]
 
-        fh.write_file('statistics_output.csv', result)
-        print("Statistics file generated: statistics_output.csv")
+        fh.write_file(file_name, result)
+        print(f"Statistics file generated: {file_name}")
         return result
 
 

@@ -1,20 +1,24 @@
 from DataFrame import DataframeObject
 def main():
-    # TODO: Read data
+    df = DataframeObject.read_csv()
+    print(df.count_nulls())
+    res = df.describe(file_name='stats_before_filling.csv')
+    for key, value in res.items():
+        print(f"{key}: {value}")
 
+    print("\nFilling missing values...")
+    df.fillna(num_strategy='mean', str_strategy='mode')
+    print(df.count_nulls())
+    res = df.describe(file_name='stats_after_filling.csv')
+    for key, value in res.items():
+        print(f"{key}: {value}")
+    
+    df.to_csv('filled_data.csv')
 
-    # TODO: Fill missing values
-    # Numeric columns → mean
-    # Categorical columns → mode
-
-
-    # TODO:Generate statistics file
-
-
-    # TODO:Write cleaned data to CSV
-    pass
+    print("\nReloading filled data from CSV...")
+    df = DataframeObject.read_csv('filled_data.csv')
+    print(df.count_nulls())
 
 
 if __name__ == "__main__":
-    df = DataframeObject.read_csv()
-    print(df.count_nulls())
+    main()
