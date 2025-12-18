@@ -24,8 +24,8 @@ def read_csv_file(file_name = 'titanic.csv', dtypes:dict = None):
     data = {
         key: [
             None if row[key] == '' else
-            int(row[key]) if dtypes and dtypes[key] == 'int' else
-            float(row[key]) if dtypes and dtypes[key] == 'float' else
+            int(row[key]) if dtypes and dtypes.get(key) == 'int' else
+            float(row[key]) if dtypes and dtypes.get(key) == 'float' else
             row[key]
             for row in tmp
         ]

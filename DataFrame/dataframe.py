@@ -1,5 +1,5 @@
 from FileHandler import file_handler as fh
-
+from Stats import stats as st
 class DataframeObject:
     def __init__(self, data:dict, dtype:dict):
         """
@@ -38,7 +38,25 @@ class DataframeObject:
         return null_counts
 
     
-    #TODO: define describe()
+    def describe(self):
+        """
+        Generate basic statistics for numeric columns in the Dataframe.
+        Returns:
+            dict: A dictionary where keys are column names and values are dictionaries of statistics (mean, median, std).
+        """
+        result = {}
+        result['columns'] = list(self.data.keys())
+        nulls = self.count_nulls()
+        result['null_counts'] = [nulls[col] for col in result['columns']]
+        result['max'] = [st.get_col_max(self.data[col]) if self.dtype[col] in ['int', 'float'] else None for col in result['columns']]
+        result['min'] = [st.get_col_min(self.data[col]) if self.dtype[col] in ['int', 'float'] else None for col in result['columns']]
+        result['mean'] = [st.get_col_mean(self.data[col]) if self.dtype[col] in ['int', 'float'] else None for col in result['columns']]
+        result['median'] = [st.get_col_median(self.data[col]) if self.dtype[col] in ['int', 'float'] else None for col in result['columns']]
+        result['mode'] = [st.get_col_mode(self.data[col]) for col in result['columns']]
+
+        fh.write_file('statistics_output.csv', result)
+        print("Statistics file generated: statistics_output.csv")
+        return result
 
 
     def to_csv(self, file_name):
