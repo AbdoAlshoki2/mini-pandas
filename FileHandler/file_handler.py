@@ -6,7 +6,7 @@ def read_csv_file(file_name = 'titanic.csv', dtypes:dict = None):
     Read a CSV file and convert each column to the specified data type.
 
     Args:
-        file_path (str): Path to the CSV data file.
+        file_name (str): Name of the CSV data file in the 'data' directory.
         dtypes (dict): Dictionary mapping column names to data types ('int', 'float', 'string').
 
     Returns:
@@ -24,8 +24,8 @@ def read_csv_file(file_name = 'titanic.csv', dtypes:dict = None):
     data = {
         key: [
             None if row[key] == '' else
-            int(row[key]) if dtypes and dtypes.get(key) == 'int' else
-            float(row[key]) if dtypes and dtypes.get(key) == 'float' else
+            int(row[key]) if dtypes and dtypes[key] == 'int' else
+            float(row[key]) if dtypes and dtypes[key] == 'float' else
             row[key]
             for row in tmp
         ]
@@ -39,7 +39,7 @@ def read_dtype(file_name = 'titanic_dtype.csv'):
     Read a CSV file containing column names and their data types.
 
     Args:
-        file_path (str): Path to the CSV file containing column names and types.
+        file_name (str): Name of the CSV file in the 'data' directory containing column names and types.
 
     Returns:
         dict: A dictionary where keys are column names and values are data types ('int', 'float', 'string').
@@ -59,7 +59,7 @@ def write_file(file_name, data:dict):
     Write a data dictionary to a CSV file.
 
     Args:
-        file_path (str): Path to the output CSV file.
+        file_name (str): Name of the output CSV file in the 'data' directory.
         data (dict): Dictionary where keys are column names and values are lists of column values.
 
     Returns:
