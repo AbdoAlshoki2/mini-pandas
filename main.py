@@ -1,4 +1,4 @@
-
+from DataFrame import DataframeObject
 
 def main():
     # TODO: Read data
@@ -17,4 +17,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    df = DataframeObject.read_csv()
+    print(df.count_nulls())
