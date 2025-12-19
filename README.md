@@ -9,9 +9,9 @@ A lightweight CSV data manipulation library inspired by pandas.
 
 ## Usage
 ```python
-from DataFrame.dataframe import Dataframe
+from DataFrame.dataframe import DataframeObject
 
-df = Dataframe.read_csv('titanic.csv', 'titanic_dtype.csv')
+df = DataframeObject.read_csv('titanic.csv', 'titanic_dtype.csv')
 print(df.count_nulls())
 df.to_csv('output.csv')
 ```
